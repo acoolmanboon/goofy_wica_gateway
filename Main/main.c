@@ -1,157 +1,23 @@
 #include <stdio.h>
 
+#include "idk.h"
 #include "main.h"
-#include "driver_usart.h"
-#include "driver_spi.h"
-#include "driver_key.h"
-#include "driver_timer.h"
-#include "driver_gpio.h"
-#include "UserConfig.h"
-#include "sx126x.h"
-#include "stm32f1xx_hal_uart.h"
+// i will proceed to torture myself by attempting to now make a blinking LED with no HAL
+// im gonna keep the files just in case i mess up and for peace of mind i guess
 
-uint8_t DataLen = 0;
-uint8_t pdata = 0;
-static uint8_t giggityBuffer[SIZE_DATA] = {0};
+// update never mind i am literally just making a HAL from scratch
 
-void UartTimeroutStart(void)
-{
-    HAL_TIM_Base_Stop_IT(&htim3);
-
-    __HAL_TIM_SET_COUNTER(&htim3, 0);
-    __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
-
-    HAL_TIM_Base_Start_IT(&htim3);
-}
-void UartTimeroutStop(void)
-{
-    HAL_TIM_Base_Stop_IT(&htim3);
-    __HAL_TIM_SET_COUNTER(&htim3, 0);
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    __disable_irq();  // 添加临界区保护  
-    UartTimeroutStop();
-    giggityBuffer[DataLen++] = pdata;
-    printf("Received %c, DataLen %d \n\r", pdata, DataLen);
-    if(DataLen == SIZE_DATA)
-    {
-        queueEnqueue(pUart1RxQueue, &giggityBuffer, DataLen);
-        memset(giggityBuffer,0,SIZE_DATA);
-        DataLen = 0;
-    }
-    UartTimeroutStart();
-    HAL_UART_Receive_IT(&husart,&pdata, sizeof(pdata));
-
-    __enable_irq();  // 恢复中断
-}
-
-
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
-{
-
-    if(htim->Instance == TIM3)
-    {
-        if(0 != DataLen )
-        {
-            queueEnqueue(pUart1RxQueue, &giggityBuffer, DataLen);
-            memset(giggityBuffer,0,SIZE_DATA);
-            DataLen = 0;
-        }
-    }
-   UartTimeroutStop();
-}
-
-
-// this should redirect printf to uart
-int __io_putchar(int ch)
-{
-    uint8_t c = (uint8_t)ch;
-
-    HAL_UART_Transmit(&husart, &c, 1, HAL_MAX_DELAY);
-
-    return ch;
-}
-
-// i dont even think this is used
-int __io_getchar(void)
-{
-    uint8_t ch = 0;
-
-    __HAL_UART_CLEAR_OREFLAG(&husart);
-
-    HAL_UART_Receive(&husart, &ch, 1, HAL_MAX_DELAY);
-
-    // Echo received character back to USART
-    HAL_UART_Transmit(&husart, &ch, 1, HAL_MAX_DELAY);
-
-    return ch;
-}
 int main(void)
 {    
-    // 初始化HAL库函数必须要调用此函数
-    HAL_Init();
+	RCC->CR |= RCC_CR_HSEON_MASK; // Enable the HSE flag
+	while (!(RCC->CR & RCC_CR_HSERDY_MASK)); // Wait for the HSE to be ready
 
-    /*
-     * 系统时钟即AHB/APB时钟配置    
-	 * 使用外部高速时钟HSE（8MHz）配置系统时钟，经过PLL放大9倍，得到72MHz
-    */
-    SystemClock_Config();
+	RCC->CFGR &= ~(RCC_CFGR_SW_MASK); // clear the SW register
+	RCC->CFGR |= (RCC_CFGR_SW_HSE << RCC_CFGR_SW_OFFSET); // set the SW register to use HSE
+	while(((RCC->CFGR & RCC_CFGR_SW_OFFSET) >> RCC_CFGR_SW_MASK) != RCC_CFGR_SWS_HSE) // wait for HSE to be used
 
-    //初始化接收队列
-    UartRxQueue.front = 0;
-    UartRxQueue.tail = 0;
-    UartRxQueue.count = 0;
-    pUart1RxQueue = (pQueue)&UartRxQueue;
-  
-    // 初始化USART1，设置波特率为115200 bps
-    UsartInit(9600); 
-    
-    // 初始化定时器
-    TimerInit();    
-    TIM3_Init();
-    // 初始化SPI
-    SPI_Init();
-    gpio_init();
-  
-    //Lora初始化
-    LoraInit();
-    DIO1_Init();
-    printf("**********************************************\n\r");
-    printf("-->Power On\n\r");
-    printf("-->Oh god i cant do this anymore \n\r");
-		printf("-->V1.2.35\n\r");
-    printf("-->DX SX1262(LLCC68) TEST :%d %d\n\r",TEST,LORA_FRE);
-    printf("**********************************************\n\r");
-    ms_timer_delay(1000);    
 
-    IrqFired = false;
-    radioFlag = 0x00;
-    
-#if TEST
-    // transmit CW (no idea what) if test is on
+	while (1) {
 
-        sx126x_set_tx_cw(NULL);
-#endif
-    for(;;)
-    {   
-	    Data_Processing();
-        DX_Lora_RadioIrqProcess();
-    }
-}
-
-/*
- *  函数名：void Error_Handler(void)
- *  输入参数：无
- *  输出参数：无
- *  返回值：无
-*  函数作用：程序错误处理函数，此处暂时设为死循环，不做任何动作
-*/
-void Error_Handler(void)
-{
-    while(1)
-    {
-        printf("%s, %d\n", __FUNCTION__, __LINE__); 
-    }
+	}
 }

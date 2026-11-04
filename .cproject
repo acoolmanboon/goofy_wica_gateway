@@ -181,4 +181,5 @@
 			<resource resourceType="PROJECT" workspacePath="/goofy_wica_receiver"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
