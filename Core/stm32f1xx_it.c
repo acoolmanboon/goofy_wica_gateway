@@ -23,8 +23,6 @@
 #include "../Core/stm32f1xx_it.h"
 
 #include "stm32f1xx_hal.h"
-#include "driver_usart.h"
-#include "driver_timer.h"
 
 
 /** @addtogroup STM32F1xx_HAL_Examples
@@ -164,13 +162,13 @@ void SysTick_Handler(void)
 }*/
 void USART1_IRQHandler(void)
 {
-    HAL_UART_IRQHandler(&husart);
+    //HAL_UART_IRQHandler(&husart);
 }
 
 
 void TIM3_IRQHandler(void)
 {
-    HAL_TIM_IRQHandler(&htim3);
+    //HAL_TIM_IRQHandler(&htim3);
 }
 
 

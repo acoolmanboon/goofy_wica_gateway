@@ -52,6 +52,9 @@
 									<listOptionValue builtIn="false" value="../Main"/>
 									<listOptionValue builtIn="false" value="../quequ"/>
 									<listOptionValue builtIn="false" value="../SDK/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="GoofyHAL_STM32F1XX"/>
+									<listOptionValue builtIn="false" value="GoofyHAL_STM32F1XX/drivers"/>
+									<listOptionValue builtIn="false" value="GoofyHAL_STM32F1XX/registers"/>
 									<listOptionValue builtIn="false" value="../SDK/CMSIS/Device/ST/STM32F1xx/Include"/>
 									<listOptionValue builtIn="false" value="../SDK/STM32F1xx_HAL_Driver/Inc"/>
 								</option>
