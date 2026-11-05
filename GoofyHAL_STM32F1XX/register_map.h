@@ -1,7 +1,14 @@
+/*
+ * register_map.h
+ *
+ *  Created on: Nov 4, 2026
+ *      Author: acoolmanboon
+ */
+
 #include <stdint.h>
 
-#ifndef REGISTER_MAP
-#define  REGISTER_MAP
+#ifndef GOOFYHAL_STM32F1XX_REGISTER_MAP_H
+#define GOOFYHAL_STM32F1XX_REGISTER_MAP_H
 
 #define BIT_MASK(n) (1U << (n))
 #define FIELD_MASK(width, pos) (((1U << (width)) - 1U) << (pos)) // this is lowkey genius
@@ -32,12 +39,20 @@ typedef struct {
 	volatile uint32_t LCKR;
 } GPIO_REGISTER_MAP;
 
+//typedef enum {
+//
+//} REGISTER_ADDRESSES;
+
 // Register locations
 #define RCC ((RCC_REGISTER_MAP *)0x40021000UL)
-#define GPIOB ((GPIO_REGISTER_MAP *)0x40010C00UL)
 
-// GPIO registers
-#define IO_MODE_
+#define GPIOA ((GPIO_REGISTER_MAP *)0x40010800UL)
+#define GPIOB ((GPIO_REGISTER_MAP *)0x40010C00UL)
+#define GPIOC ((GPIO_REGISTER_MAP *)0x40011000UL)
+#define GPIOD ((GPIO_REGISTER_MAP *)0x40011400UL)
+#define GPIOE ((GPIO_REGISTER_MAP *)0x40011800UL)
+#define GPIOF ((GPIO_REGISTER_MAP *)0x40011C00UL)
+#define GPIOG ((GPIO_REGISTER_MAP *)0x40012000UL)
 
 // im fucking deleting this im not making like 576 port definitions
 // blud
@@ -87,11 +102,6 @@ typedef enum
 
 
 // Backup Domain Control Register
-
-// APB2 peripheral clock enable register
-#define RCC_APB2ENR_IOBCEN_OFFSET 3U
-#define RCC_APB2ENR_IOBCEN_MASK BIT_MASK(RCC_APB2ENR_IOBCEN_OFFSET)
-
 
 // APB1 peripheral clock enable register
 #define RCC_APB1ENR_PWREN_OFFSET 28U

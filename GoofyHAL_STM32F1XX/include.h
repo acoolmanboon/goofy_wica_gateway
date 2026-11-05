@@ -1,7 +1,15 @@
+/*
+ * include.h
+ *
+ *  Created on: Nov 4, 2026
+ *      Author: acoolmanboon
+ */
+
 #include <stdint.h>
 #include "register_map.h"
+#include "drivers/gpio.h"
 
-#ifndef GOOFY_HAL
-#define GOOFY_HAL
+#ifndef GOOFY_HAL_STM32F1XX_INCLUDE_H_
+#define GOOFY_HAL_STM32F1XX_INCLUDE_H_
 
 #endif

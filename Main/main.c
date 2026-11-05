@@ -18,14 +18,10 @@ int main(void)
 	RCC->CFGR |= (HSE << RCC_CFGR_SW_OFFSET); // set the SW register to use HSE
 	while (((RCC->CFGR & RCC_CFGR_SWS_MASK) >> RCC_CFGR_SWS_OFFSET) != HSE); // wait for HSE to be used
 
-	// enable GPIO B port
-	RCC->APB2ENR |= RCC_APB2ENR_IOBCEN_MASK; // ENable the APB2 port B to use it
+	ENABLE_IO_PORT(IO_PORT_B); // ENABLE GPIOB
+	SETUP_IO_PORT(IO_PORT_B, 11, IO_PORT_MODE_OUTPUT_2MHZ, IO_PORT_CONFIG_OUTPUT_PUSH_PULL);
 
-	// configure GPIO PB11
-	GPIOB->CRH &= ~GPIO_CRH_PORT11_MASK;
-	GPIOB->CRH |= (0x02U << GPIO_CRH_PORT11_OFFSET);
-
-	// FUCK it im gonna just set the bit manually
+	// SET PB11 to 1
 	GPIOB->BSRR |= (1 << 11);
 
 	while (1) {
