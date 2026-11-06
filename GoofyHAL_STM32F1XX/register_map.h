@@ -46,19 +46,6 @@ typedef struct {
 // Register locations
 #define RCC ((RCC_REGISTER_MAP *)0x40021000UL)
 
-#define GPIOA ((GPIO_REGISTER_MAP *)0x40010800UL)
-#define GPIOB ((GPIO_REGISTER_MAP *)0x40010C00UL)
-#define GPIOC ((GPIO_REGISTER_MAP *)0x40011000UL)
-#define GPIOD ((GPIO_REGISTER_MAP *)0x40011400UL)
-#define GPIOE ((GPIO_REGISTER_MAP *)0x40011800UL)
-#define GPIOF ((GPIO_REGISTER_MAP *)0x40011C00UL)
-#define GPIOG ((GPIO_REGISTER_MAP *)0x40012000UL)
-
-// im fucking deleting this im not making like 576 port definitions
-// blud
-#define GPIO_CRH_PORT11_OFFSET 12U
-#define GPIO_CRH_PORT11_MASK FIELD_MASK(4, GPIO_CRH_PORT11_OFFSET)
-
 // Clock control register
 #define RCC_CR_HSION_OFFSET 0U
 #define RCC_CR_HSION_MASK BIT_MASK(RCC_CR_HSION_OFFSET)
@@ -85,13 +72,6 @@ typedef struct {
 #define RCC_CR_PLLRDY_MASK BIT_MASK(RCC_CR_PLLRDY_OFFSET)
 
 // Clock Configuration Register
-typedef enum
-{
-    HSI = 0x00,
-    HSE = 0x01,
-    PLL = 0x02,
-	ERR = 0x03,
-} OSCILLATOR;
 
 #define RCC_CFGR_SW_OFFSET 0U
 #define RCC_CFGR_SW_MASK FIELD_MASK(2, RCC_CFGR_SW_OFFSET)

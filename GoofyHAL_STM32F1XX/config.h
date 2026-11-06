@@ -8,7 +8,4 @@
 #ifndef GOOFYHAL_STM32F1XX_CONFIG_H_
 #define GOOFYHAL_STM32F1XX_CONFIG_H_
 
-// to have GPIO debug (fix human error) define GOOFYHAL_DEBUG_GPIO
-//#define GOOFYHAL_DEBUG_GPIO
-
 #endif /* GOOFYHAL_STM32F1XX_CONFIG_H_ */

@@ -7,7 +7,9 @@
 
 #include <stdint.h>
 #include "register_map.h"
+
 #include "drivers/gpio.h"
+#include "drivers/clock.h"
 
 #ifndef GOOFY_HAL_STM32F1XX_INCLUDE_H_
 #define GOOFY_HAL_STM32F1XX_INCLUDE_H_

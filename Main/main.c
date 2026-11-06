@@ -8,23 +8,26 @@
 
 // update never mind i am literally just making a HAL from scratch
 
+#define IDK_PORT IO_PORT_B // this is because the devboard has the KEY and LED both on the same port
+#define LED_PIN 11
+#define KEY_PIN 12
+
 int main(void)
 {    
-	// enable clock to use 8MHZ crystal
-	RCC->CR |= RCC_CR_HSEON_MASK; // Enable the HSE flag
-	while (!(RCC->CR & RCC_CR_HSERDY_MASK)); // Wait for the HSE to be ready
+	ENABLE_OSCILLATOR(CLOCK_OSCILLATOR_OFFSET_HSE);
+	SWITCH_SYSTEM_CLOCK(CLOCK_OSCILLATOR_HSE);
 
-	RCC->CFGR &= ~(RCC_CFGR_SW_MASK); // clear the SW register
-	RCC->CFGR |= (HSE << RCC_CFGR_SW_OFFSET); // set the SW register to use HSE
-	while (((RCC->CFGR & RCC_CFGR_SWS_MASK) >> RCC_CFGR_SWS_OFFSET) != HSE); // wait for HSE to be used
+	ENABLE_IO_PORT(IDK_PORT); // ENABLE GPIOB
+	SETUP_IO_PORT(IDK_PORT, LED_PIN, IO_PORT_MODE_OUTPUT_2MHZ, IO_PORT_CONFIG_OUTPUT_PUSH_PULL);
+	SETUP_IO_PORT(IDK_PORT, KEY_PIN, IO_PORT_MODE_INPUT, IO_PORT_CONFIG_INPUT_PULL_UP);
 
-	ENABLE_IO_PORT(IO_PORT_B); // ENABLE GPIOB
-	SETUP_IO_PORT(IO_PORT_B, 11, IO_PORT_MODE_OUTPUT_2MHZ, IO_PORT_CONFIG_OUTPUT_PUSH_PULL);
-
-	// SET PB11 to 1
-	GPIOB->BSRR |= (1 << 11);
+	WRITE_IO_PORT(IDK_PORT, LED_PIN);
 
 	while (1) {
-
+		if (READ_IO_PORT(IDK_PORT, KEY_PIN)) {
+			CLEAR_IO_PORT(IDK_PORT, LED_PIN);
+		} else {
+			WRITE_IO_PORT(IDK_PORT, LED_PIN);
+		}
 	}
 }
