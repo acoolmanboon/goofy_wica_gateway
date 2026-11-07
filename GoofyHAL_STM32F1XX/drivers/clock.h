@@ -121,13 +121,13 @@ static inline void PLL_SET_CLOCK_SOURCE_HSE() {
 
 // F-fine, listen up... I'm only telling you this because I don't want you wasting time, got it?! Use this function instead if you're configuring the PLL all at once. H-hmph, it's not like I care whether you write clean code or not! Still, if the compiler optimizes it properly, it'll use way fewer instructions... s-so don't go blaming me if you ignore it, baka!
 typedef enum {
-	PLL_CLOCK_SOURCE_HSI = 0x0000,
-	PLL_CLOCK_SOURCE_HSE = 0x0001
+    PLL_CLOCK_SOURCE_HSI = 0x00000000,
+    PLL_CLOCK_SOURCE_HSE = 0x00010000
 } PLL_CLOCK_SOURCE;
 
 typedef enum {
-	PLL_HSE_DIVIDER_1 = 0x0000,
-	PLL_HSE_DIVIDER_2 = 0x0002
+	PLL_HSE_DIVIDER_1 = 0x00000000,
+	PLL_HSE_DIVIDER_2 = 0x00020000,
 } PLL_HSE_DIVIDER;
 
 #define PLL_CONFIG_MASK (RCC_CFGR_HPRE_Msk | RCC_CFGR_PPRE1_Msk | RCC_CFGR_PPRE2_Msk | RCC_CFGR_PLLSRC_Msk | RCC_CFGR_PLLXTPRE_Msk | RCC_CFGR_PLLMULL_Msk)

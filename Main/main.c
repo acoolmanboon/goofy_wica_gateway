@@ -3,10 +3,6 @@
 #include "main.h"
 
 #include "../GoofyHAL_STM32F1XX/include.h"
-// i will proceed to torture myself by attempting to now make a blinking LED with no HAL
-// im gonna keep the files just in case i mess up and for peace of mind i guess
-
-// update never mind i am literally just making a HAL from scratch
 
 #define IDK_PORT IO_PORT_B // this is because the devboard has the KEY and LED both on the same port
 #define LED_PIN 11
@@ -15,6 +11,17 @@
 #define USART_PORT IO_PORT_A
 #define USART_TX_PIN 9
 #define USART_RX_PIN 10
+
+void USART1_Write(char ch) {)
+    while (!(USART1->SR & USART_SR_TXE_Msk));
+    USART1->DR = (ch & 0xFF);
+}
+
+void USART1_SendString(char *str) {
+    while (*str) {
+        USART1_Write(*str++);
+    }
+}
 
 int main(void)
 {    
@@ -50,10 +57,13 @@ int main(void)
 	SETUP_IO_PORT(USART_PORT, USART_RX_PIN, IO_PORT_MODE_INPUT, IO_PORT_CONFIG_INPUT_FLOATING);
 
 	POWER_ON_USART();
-	SET_USART_BAUD_RATE_RAW(0x1D4C); // 9600 baud
+	SET_USART_BAUD_RATE_RAW(0x271); // 9600 baud
 
 	ENABLE_USART();
+	ENABLE_USART_TRANSMITTER();
 
+
+	USART1_SendString("Hello, senpai.. HUH?! WHAT? Me- Liking YOU?! HMPH! Seriously? You really think I would like a BAKA like you? W-What? O-Okay.. Fine.. Maybe I do like you a little bit, baka. BUT NOT THAT MUCH!! \n\r");
 
 	// test function : turn a LED on when you press the key
 	while (1) {

@@ -32,5 +32,21 @@ static inline void SET_USART_BAUD_RATE_RAW(uint32_t raw) {
 	USART1->BRR = raw;
 }
 
+static inline void ENABLE_USART_RECEIVER() {
+	USART1->CR1 |= USART_CR1_RE_Msk;
+}
+
+static inline void DISABLE_USART_RECEIVER() {
+	USART1->CR1 &= ~USART_CR1_RE_Msk;
+}
+
+static inline void ENABLE_USART_TRANSMITTER() {
+	USART1->CR1 |= USART_CR1_TE_Msk;
+}
+
+static inline void DISABLE_USART_TRANSMITTER() {
+	USART1->CR1 &= ~USART_CR1_TE_Msk;
+}
+
 
 #endif /* GOOFYHAL_STM32F1XX_DRIVERS_USART_H_ */
