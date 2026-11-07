@@ -6,7 +6,7 @@
  */
 
 #include <stdint.h>
-#include "register_map.h"
+#include "stm32f103xb.h"
 
 #include "drivers/gpio.h"
 #include "drivers/clock.h"

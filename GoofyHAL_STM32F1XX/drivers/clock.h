@@ -8,7 +8,7 @@
 #ifndef GOOFYHAL_STM32F1XX_DRIVERS_CLOCK_H_
 #define GOOFYHAL_STM32F1XX_DRIVERS_CLOCK_H_
 
-#include "../register_map.h"
+#include "../includes/stm32f103xb.h"
 #include "../config.h"
 
 typedef enum {
@@ -24,11 +24,11 @@ typedef enum {
 } CLOCK_OSCILLATOR;
 
 static inline void ENABLE_CSS() {
-	RCC->CR |= RCC_CR_CSSON_MASK;
+	RCC->CR |= RCC_CR_CSSON_Msk;
 }
 
 static inline void DISABLE_CSS() {
-	RCC->CR &=~RCC_CR_CSSON_MASK;
+	RCC->CR &=~RCC_CR_CSSON_Msk;
 }
 
 static inline void ENABLE_OSCILLATOR(CLOCK_OSCILLATOR_OFFSET oscillator) {
@@ -42,8 +42,8 @@ static inline void DISABLE_OSCILLATOR(CLOCK_OSCILLATOR_OFFSET oscillator) {
 }
 
 static inline void SWITCH_SYSTEM_CLOCK(CLOCK_OSCILLATOR oscillator) {
-	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_SW_MASK) | oscillator;
-	while ((RCC->CFGR & RCC_CFGR_SWS_MASK) != (oscillator << 2U));
+	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_SW_Msk) | oscillator;
+	while ((RCC->CFGR & RCC_CFGR_SWS_Msk) != (oscillator << 2U));
 }
 
 // PLL stuff
@@ -87,35 +87,35 @@ typedef enum {
 } APB_PRESCALER;
 
 static inline void PLL_SET_APB1_PRESCALER(APB_PRESCALER prescaler) {
-	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_PPRE1_MASK) | prescaler;
+	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_PPRE1_Msk) | prescaler;
 }
 
 static inline void PLL_SET_APB2_PRESCALER(APB_PRESCALER prescaler) {
-	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_PPRE2_MASK) | (prescaler << 3);
+	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_PPRE2_Msk) | (prescaler << 3);
 }
 
 static inline void PLL_SET_AHB_PRESCALER(AHB_PRESCALER prescaler) {
-	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_HPRE_MASK) | prescaler;
+	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_HPRE_Msk) | prescaler;
 }
 
 static inline void PLL_SET_MULTIPLIER(PLL_MULTIPLIER multiplier) {
-	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_PLLMUL_MASK) | multiplier;
+	RCC->CFGR = (RCC->CFGR & ~RCC_CFGR_PLLMULL_Msk) | multiplier;
 }
 
 static inline void PLL_ENABLE_HSE_DIVIDER() {
-	RCC->CFGR |= RCC_CFGR_PLLXTPRE_MASK;
+	RCC->CFGR |= RCC_CFGR_PLLXTPRE_Msk;
 }
 
 static inline void PLL_DISABLE_HSE_DIVIDER() {
-	RCC->CFGR &= ~RCC_CFGR_PLLXTPRE_MASK;
+	RCC->CFGR &= ~RCC_CFGR_PLLXTPRE_Msk;
 }
 
 static inline void PLL_SET_CLOCK_SOURCE_HSI() {
-	RCC->CFGR &= ~RCC_CFGR_PLLSRC_MASK;
+	RCC->CFGR &= ~RCC_CFGR_PLLSRC_Msk;
 }
 
 static inline void PLL_SET_CLOCK_SOURCE_HSE() {
-	RCC->CFGR |= RCC_CFGR_PLLSRC_MASK;
+	RCC->CFGR |= RCC_CFGR_PLLSRC_Msk;
 }
 
 // flash latency for higher frequencies
@@ -129,7 +129,7 @@ typedef enum {
 } FLASH_ACCESS_CONFIG;
 
 static inline void SET_FLASH_ACCESS_CONFIG(FLASH_ACCESS_CONFIG config) {
-	FLASH->ACR = (FLASH->ACR & ~FLASH_ACR_CFG_MASK) | config;
+	FLASH->ACR = (FLASH->ACR & ~0x1FU) | config;
 }
 
 #endif /* GOOFYHAL_STM32F1XX_DRIVERS_CLOCK_H_ */

@@ -8,7 +8,7 @@
 #ifndef GOOFYHAL_STM32F1XX_DRIVERS_GPIO_H_
 #define GOOFYHAL_STM32F1XX_DRIVERS_GPIO_H_
 
-#include "../register_map.h"
+#include "../includes/stm32f103xb.h"
 #include "../config.h"
 
 typedef enum {
@@ -49,7 +49,7 @@ static inline void DISABLE_IO_PORT(IO_PORT port) {
 }
 
 static inline void SETUP_IO_PORT(IO_PORT port, uint8_t pin, IO_PORT_MODE mode, IO_PORT_CONFIG config) {
-	GPIO_REGISTER_MAP* gpioRegister = (GPIO_REGISTER_MAP*)(0x40010000UL + (0x400UL * port));
+	GPIO_TypeDef* gpioRegister = (GPIO_TypeDef*)(0x40010000UL + (0x400UL * port));
 	if (pin < 8) {
 		gpioRegister->CRL = (gpioRegister->CRL & ~(0x0F << (pin << 2))) | ((mode | config) << (pin << 2));
 	} else {
@@ -61,17 +61,17 @@ static inline void SETUP_IO_PORT(IO_PORT port, uint8_t pin, IO_PORT_MODE mode, I
 }
 
 static inline void CLEAR_IO_PORT(IO_PORT port, uint8_t pin) {
-	GPIO_REGISTER_MAP* gpioRegister = (GPIO_REGISTER_MAP*)(0x40010000UL + (0x400UL * port));
+	GPIO_TypeDef* gpioRegister = (GPIO_TypeDef*)(0x40010000UL + (0x400UL * port));
 	gpioRegister->BSRR = (1U << (16U + pin));
 }
 
 static inline void WRITE_IO_PORT(IO_PORT port, uint8_t pin) {
-	GPIO_REGISTER_MAP* gpioRegister = (GPIO_REGISTER_MAP*)(0x40010000UL + (0x400UL * port));
+	GPIO_TypeDef* gpioRegister = (GPIO_TypeDef*)(0x40010000UL + (0x400UL * port));
 	gpioRegister->BSRR = (1U << pin);
 }
 
 static inline unsigned int READ_IO_PORT(IO_PORT port, uint8_t pin) {
-	GPIO_REGISTER_MAP* gpioRegister = (GPIO_REGISTER_MAP*)(0x40010000UL + (0x400UL * port));
+	GPIO_TypeDef* gpioRegister = (GPIO_TypeDef*)(0x40010000UL + (0x400UL * port));
 	return (gpioRegister->IDR & (1U << pin)) != 0;
 }
 
