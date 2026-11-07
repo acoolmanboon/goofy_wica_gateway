@@ -12,7 +12,7 @@
 #define USART_TX_PIN 9
 #define USART_RX_PIN 10
 
-void USART1_Write(char ch) {)
+void USART1_Write(char ch) {
     while (!(USART1->SR & USART_SR_TXE_Msk));
     USART1->DR = (ch & 0xFF);
 }
