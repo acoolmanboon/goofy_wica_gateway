@@ -39,13 +39,25 @@ typedef struct {
 	volatile uint32_t LCKR;
 } GPIO_REGISTER_MAP;
 
+typedef struct {
+	volatile uint32_t ACR;
+	volatile uint32_t KEYR;
+	volatile uint32_t OPTKEYR;
+	volatile uint32_t SR;
+	volatile uint32_t CR;
+	volatile uint32_t AR;
+	volatile uint32_t GIGGITY;
+	volatile uint32_t OBR;
+	volatile uint32_t WRPR;
+} FLASH_REGISTER_MAP;
+
 //typedef enum {
 //
 //} REGISTER_ADDRESSES;
 
 // Register locations
 #define RCC ((RCC_REGISTER_MAP *)0x40021000UL)
-
+#define FLASH ((FLASH_REGISTER_MAP *)0x40022000UL)
 // Clock control register
 #define RCC_CR_HSION_OFFSET 0U
 #define RCC_CR_HSION_MASK BIT_MASK(RCC_CR_HSION_OFFSET)
@@ -98,6 +110,9 @@ typedef struct {
 #define RCC_CFGR_PLLSRC_MASK BIT_MASK(RCC_CFGR_PLLSRC_OFFSET)
 
 // Backup Domain Control Register
+
+// Flash access control register
+#define FLASH_ACR_CFG_MASK FIELD_MASK(0, 5) // this is a combination of fetch buffer and wait latency, special mask
 
 // APB1 peripheral clock enable register
 #define RCC_APB1ENR_PWREN_OFFSET 28U
