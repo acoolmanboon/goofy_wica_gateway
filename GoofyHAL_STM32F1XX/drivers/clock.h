@@ -37,7 +37,7 @@ static inline void ENABLE_OSCILLATOR(CLOCK_OSCILLATOR_OFFSET oscillator) {
 }
 
 static inline void DISABLE_OSCILLATOR(CLOCK_OSCILLATOR_OFFSET oscillator) {
-	RCC->CR &= (1U << oscillator);
+	RCC->CR &= ~(1U << oscillator);
 	while (RCC->CR & (1U << (oscillator + 1U)));
 }
 
