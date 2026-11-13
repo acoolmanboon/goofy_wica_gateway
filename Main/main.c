@@ -23,6 +23,14 @@ void USART1_SendString(char *str) {
     }
 }
 
+void USART1_IRQHandler(void) {
+    if (USART1->SR & USART_SR_RXNE) {
+        uint8_t received_data = USART1->DR;
+        USART1_Write(received_data);
+    }
+}
+
+
 int main(void)
 {    
 	// Setup HSE to be used as PLL to set a 72MHz clock
@@ -61,7 +69,10 @@ int main(void)
 
 	ENABLE_USART();
 	ENABLE_USART_TRANSMITTER();
+	ENABLE_USART_RECEIVER();
 
+	USART1->CR1 |= USART_CR1_RXNEIE;
+	NVIC_EnableIRQ(USART1_IRQn);
 
 	USART1_SendString("Hello, senpai.. HUH?! WHAT? Me- Liking YOU?! HMPH! Seriously? You really think I would like a BAKA like you? W-What? O-Okay.. Fine.. Maybe I do like you a little bit, baka. BUT NOT THAT MUCH!! \n\r");
 
