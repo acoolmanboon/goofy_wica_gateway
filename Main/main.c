@@ -12,6 +12,38 @@
 #define USART_TX_PIN 9
 #define USART_RX_PIN 10
 
+#define LCC68_NSS_PORT   IO_PORT_A
+#define LCC68_NSS_PIN    4
+
+#define LCC68_SCK_PORT   IO_PORT_A
+#define LCC68_SCK_PIN    5
+
+#define LCC68_MOSI_PORT  IO_PORT_A
+#define LCC68_MOSI_PIN   7
+
+#define LCC68_MISO_PORT  IO_PORT_A
+#define LCC68_MISO_PIN   6
+
+
+#define LCC68_NRST_PORT IO_PORT_A
+#define LCC68_NRST_PIN  3
+
+#define LCC68_BUSY_PORT IO_PORT_A
+#define LCC68_BUSY_PIN  2
+
+
+
+#define LCC68_DIO1_PORT IO_PORT_C
+#define LCC68_DIO1_PIN  15
+
+#define LCC68_RXEN_PORT IO_PORT_A
+#define LCC68_RXEN_PIN  1
+
+#define LCC68_TXEN_PORT IO_PORT_A
+#define LCC68_TXEN_PIN  0
+
+
+
 void USART1_Write(char ch) {
     while (!(USART1->SR & USART_SR_TXE_Msk));
     USART1->DR = (ch & 0xFF);
@@ -50,6 +82,9 @@ int main(void)
 	ENABLE_OSCILLATOR(CLOCK_OSCILLATOR_OFFSET_PLL);
 	SWITCH_SYSTEM_CLOCK(CLOCK_OSCILLATOR_PLL);
 
+	// setup systick 4 delays
+	SYSTICK_INIT(72000000UL);
+
 	// enable the debugging ports
 
 	ENABLE_IO_PORT(IDK_PORT); // ENABLE GPIOB
@@ -75,6 +110,17 @@ int main(void)
 	NVIC_EnableIRQ(USART1_IRQn);
 
 	USART1_SendString("Hello, senpai.. HUH?! WHAT? Me- Liking YOU?! HMPH! Seriously? You really think I would like a BAKA like you? W-What? O-Okay.. Fine.. Maybe I do like you a little bit, baka. BUT NOT THAT MUCH!! \n\r");
+
+	// time for pain LORAA!!!!
+	SETUP_IO_PORT(LCC68_BUSY_PORT, LCC68_BUSY_PIN, IO_PORT_MODE_INPUT, IO_PORT_CONFIG_INPUT_PULL_UP);
+	SYSTICK_DELAY_MS(20);
+	SETUP_IO_PORT(LCC68_NRST_PORT, LCC68_NRST_PIN, IO_PORT_MODE_OUTPUT_50MHZ, IO_PORT_CONFIG_OUTPUT_PUSH_PULL);
+	SETUP_IO_PORT(LCC68_RXEN_PORT, LCC68_RXEN_PIN, IO_PORT_MODE_OUTPUT_50MHZ, IO_PORT_CONFIG_OUTPUT_PUSH_PULL);
+	SETUP_IO_PORT(LCC68_TXEN_PORT, LCC68_TXEN_PIN, IO_PORT_MODE_OUTPUT_50MHZ, IO_PORT_CONFIG_OUTPUT_PUSH_PULL);
+
+
+
+
 
 	// test function : turn a LED on when you press the key
 	while (1) {

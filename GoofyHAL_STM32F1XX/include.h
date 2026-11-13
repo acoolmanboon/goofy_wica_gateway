@@ -10,6 +10,7 @@
 
 #include "drivers/gpio.h"
 #include "drivers/clock.h"
+#include "drivers/delay.h"
 #include "drivers/usart.h"
 
 #ifndef GOOFY_HAL_STM32F1XX_INCLUDE_H_
